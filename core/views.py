@@ -61,8 +61,8 @@ def user_register(request,):
                 msg = 'Password must contain at least 1 lowercase letter.'
                 return Response({"Message": msg}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            User.objects.create_user(username=dic['username'],password=dic['password'],email=dic['email'],first_name=dic['first_name'],
-                                      last_name=dic['last_name'],is_staff=dic['doctor'])
+            User.objects.create_user(username=dic['username'],password=dic['password'],email=dic['email'],first_name=dic['firstname'],
+                                      last_name=dic['lastname'],is_staff=dic['doctor'])
             return Response({'Message':'Registered Successfully'},status=status.HTTP_200_OK)
         except:
             return Response({'Message':'Something went wrong'},status=status.HTTP_400_BAD_REQUEST)
