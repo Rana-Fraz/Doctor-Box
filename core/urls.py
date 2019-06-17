@@ -21,5 +21,7 @@ from .views import *
 
 urlpatterns = [
     path('login/',obtain_jwt_token),
-    path('user_register/',user_register)
+    path('user_register/',user_register),
+    path('emailVer/', emailVer),
+    path('usernameVer/', usernameVer),
 ]
