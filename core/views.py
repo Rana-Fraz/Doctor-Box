@@ -98,7 +98,7 @@ def user_register(request,):
 
             return Response({'Message':'Registered Successfully'},status=status.HTTP_200_OK)
         except:
-            return Response({'Message':'Something went wrong'},status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message':'Something went wrong'},status=status.HTTP_403_FORBIDDEN)
 @csrf_exempt
 @api_view(['POST'])
 def forget_password(request):
@@ -140,4 +140,4 @@ def forget_password(request):
             return Response({'Message': 'Password reset link has been sent to your email'}, status=status.HTTP_200_OK)
         else:
             return Response({'Message': 'Unauthenticated User.', 'status': False},
-                            status.HTTP_202_ACCEPTED)
+                            status.HTTP_400_BAD_REQUEST)
