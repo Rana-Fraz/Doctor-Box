@@ -56,7 +56,7 @@ def user_register(request,):
         password = request.data['password']
         firstname = request.data['firstname']
         lastname = request.data['lastname']
-        date_of_birth=request.data['date_of_birth']
+        # date_of_birth=request.data['date_of_birth']
         un = User.objects.filter(username=username).exists()
         em = User.objects.filter(email=email).exists()
         if em and un:
@@ -90,7 +90,7 @@ def user_register(request,):
                                   last_name=dic['lastname'],is_staff=dic['doctor'])
         register_obj = profile()
         register_obj.user_id = user.id
-        register_obj.date_on_birth = date_of_birth
+        # register_obj.date_on_birth = date_of_birth
         register_obj.save()
         send_activation_code_function(register_obj)
 
@@ -101,6 +101,7 @@ def user_register(request,):
 @api_view(['POST'])
 def forget_password(request):
     if request.method == 'POST':
+
         email = request.data['email']
         # email=request.data.get('username', False)
         # obj=User.objects.get(email=email)
