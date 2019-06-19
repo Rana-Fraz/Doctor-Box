@@ -23,13 +23,21 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST_PASSWORD = 'ranafraz1'
 # EMAIL_PORT = 587
 
-DEFAULT_FROM_EMAIL = 'rana.fraz.khan@gmail.com'
+# DEFAULT_FROM_EMAIL = 'rana.fraz.khan@gmail.com'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'rfpgurus@gmail.com'
+# EMAIL_HOST_PASSWORD = 'teamrfp12345'
+# EMAIL_PORT = 587
+# DEFAULT_FROM_EMAIL = 'rfpgurus@gmail.com'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'rfpgurus@gmail.com'
-EMAIL_HOST_PASSWORD = 'teamrfp12345'
+EMAIL_HOST = 'bplmail.brainwade.com'
+EMAIL_HOST_USER = 'no-reply@cramfrenzy.com'
+EMAIL_HOST_PASSWORD = 'Cram#frenzy984@'
 EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = 'rfpgurus@gmail.com'
+DEFAULT_FROM_EMAIL = 'Team CramFrenzy no-reply@cramfrenzy.com'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
