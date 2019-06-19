@@ -85,18 +85,18 @@ def user_register(request,):
             if not any(c.islower() for c in password):
                 msg = 'Password must contain at least 1 lowercase letter.'
                 return Response({"Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-        try:
-            user=User.objects.create_user(username=dic['username'],password=dic['password'],email=dic['email'],first_name=dic['firstname'],
-                                      last_name=dic['lastname'],is_staff=dic['doctor'])
-            register_obj = profile()
-            register_obj.user_id = user.id
-            register_obj.date_on_birth = date_of_birth
-            register_obj.save()
-            send_activation_code_function(register_obj)
+        # try:
+        user=User.objects.create_user(username=dic['username'],password=dic['password'],email=dic['email'],first_name=dic['firstname'],
+                                  last_name=dic['lastname'],is_staff=dic['doctor'])
+        register_obj = profile()
+        register_obj.user_id = user.id
+        register_obj.date_on_birth = date_of_birth
+        register_obj.save()
+        send_activation_code_function(register_obj)
 
-            return Response({'Message':'Registered Successfully'},status=status.HTTP_200_OK)
-        except:
-            return Response({'Message':'Something went wrong'},status=status.HTTP_403_FORBIDDEN)
+        return Response({'Message':'Registered Successfully'},status=status.HTTP_200_OK)
+        # except:
+            # return Response({'Message':'Something went wrong'},status=status.HTTP_403_FORBIDDEN)
 @csrf_exempt
 @api_view(['POST'])
 def forget_password(request):
