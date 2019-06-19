@@ -29,26 +29,20 @@ def usernameVer(request,):
     else:
         return Response({'status': True, 'Message': 'No username exist'}, status=status.HTTP_404_NOT_FOUND)
 
-def send_activation_code_function(email,date_of_birth):
+def send_activation_code_function(register_obj):
     print ('activation')
-
-    user = User.objects.get(email=email)
-    username=user.first_name
 
     # register_obj = Contractor.objects.get(user=user)
     secret_id = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(200))
     key = {
-        'name':username,'code':secret_id
+        'name':register_obj.user.first_name,'code':secret_id
     }
 
-    register_obj = profile()
     message = get_template('Email Activation.html').render(key)
-    email = EmailMessage('Email Confirmation', message, to=[email])
+    email = EmailMessage('Email Confirmation', message, to=[register_obj.user.email])
     email.content_subtype = 'html'
     email.send()
-    register_obj.user_id=user.id
-    register_obj.authenticationCode=secret_id
-    register_obj.date_on_birth=date_of_birth
+    register_obj.authenticationCode = secret_id
     register_obj.save()
     return Response({'Message': 'Email Send'}, status=status.HTTP_200_OK)
 
@@ -92,9 +86,13 @@ def user_register(request,):
                 msg = 'Password must contain at least 1 lowercase letter.'
                 return Response({"Message": msg}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            User.objects.create_user(username=dic['username'],password=dic['password'],email=dic['email'],first_name=dic['firstname'],
+            user=User.objects.create_user(username=dic['username'],password=dic['password'],email=dic['email'],first_name=dic['firstname'],
                                       last_name=dic['lastname'],is_staff=dic['doctor'])
-            send_activation_code_function(request.data['email'],date_of_birth)
+            register_obj = profile()
+            register_obj.user_id = user.id
+            register_obj.date_on_birth = date_of_birth
+            register_obj.save()
+            # send_activation_code_function(register_obj)
 
             return Response({'Message':'Registered Successfully'},status=status.HTTP_200_OK)
         except:
