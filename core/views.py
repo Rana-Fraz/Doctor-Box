@@ -174,7 +174,7 @@ def login_authentication(request):
         if success is not False:
             user = User.objects.get(username=username)
             profile2 = profile.objects.get(user=user.id)
-            if profile.is_active == True:
+            if profile2.is_active == True:
                 return Response({'Message': 'Account is Active','doctor':user.is_staff },status=status.HTTP_200_OK)
 
             else:
