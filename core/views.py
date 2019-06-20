@@ -160,7 +160,7 @@ def activate_account(request, code):
             return Response({'Message': 'Error '}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def authentication(request):
+def login_authentication(request):
     if request.method == 'POST':
         username=request.data['username']
         password=request.data['password']
