@@ -118,7 +118,7 @@ def forget_password(request):
             return Response({'Message': 'Profile does not exist', 'status': False}, status.HTTP_404_NOT_FOUND)
 
         # print (profile)
-        if profile2.isActivat:
+        if profile2.is_active:
             reset_email = ''.join(
                 random.SystemRandom().choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _ in
                 range(200))
@@ -140,3 +140,44 @@ def forget_password(request):
         else:
             return Response({'Message': 'Unauthenticated User.', 'status': False},
                             status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def activate_account(request, code):
+    if request.method == 'POST':
+        try:
+            if (profile.objects.filter(authenticationCode=code).exists()):
+
+                reg = profile.objects.get(authenticationCode=code)
+                if (reg.isActivat==True):
+                    return Response({'Message': 'Account Already Activated'}, status=status.HTTP_404_NOT_FOUND)
+                else:
+                    reg.isActivat = True
+                    reg.save()
+                    return Response({'Message': 'Account Activated'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'Message': 'Error '}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({'Message': 'Error '}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def authentication(request):
+    if request.method == 'POST':
+        username=request.data['username']
+        password=request.data['password']
+        try:
+            user = User.objects.get(username=username)
+        except:
+            return Response({'Message': 'Invalid username'}, status=status.HTTP_401_UNAUTHORIZED)
+        # print("Success", user.username)
+        success = user.check_password(password)
+
+        if success is not False:
+            user = User.objects.get(username=username)
+            profile2 = profile.objects.get(user=user.id)
+            if profile.is_active == True:
+                return Response({'Message': 'Account is Active','doctor':user.is_staff },status=status.HTTP_200_OK)
+
+            else:
+                return Response({'Message': 'Account is Inactive'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'Message': 'Username or Password are wrong'}, status=status.HTTP_404_NOT_FOUND)
