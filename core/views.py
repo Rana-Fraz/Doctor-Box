@@ -42,7 +42,7 @@ def send_activation_code_function(register_obj):
     email = EmailMessage('Email Confirmation', message, to=[register_obj.user.email])
     email.content_subtype = 'html'
     email.send()
-    register_obj.authenticationCode = secret_id
+    register_obj.authentication_code = secret_id
     register_obj.save()
     return Response({'Message': 'Email Send'}, status=status.HTTP_200_OK)
 
@@ -114,15 +114,15 @@ def forget_password(request):
         try:
             user = User.objects.get(email=email)
             profile2 = profile.objects.get(user=user)
-        except User.DoesNotExist:
+        except profile.DoesNotExist:
             return Response({'Message': 'Profile does not exist', 'status': False}, status.HTTP_404_NOT_FOUND)
 
-        # print (profile)
+        print (profile2.is_active)
         if profile2.is_active:
             reset_email = ''.join(
                 random.SystemRandom().choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _ in
                 range(200))
-            while profile.objects.filter(authenticationCode=reset_email).exists():
+            while profile.objects.filter(authentication_code=reset_email).exists():
                 reset_email = ''.join(
                     random.SystemRandom().choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _
                     in
@@ -134,7 +134,7 @@ def forget_password(request):
             email = EmailMessage('Email Confirmation', message, to=[email])
             email.content_subtype = 'html'
             email.send()
-            profile2.authenticationCode = reset_email
+            profile2.authentication_code = reset_email
             profile2.save()
             return Response({'Message': 'Password reset link has been sent to your email'}, status=status.HTTP_200_OK)
         else:
@@ -145,9 +145,9 @@ def forget_password(request):
 def activate_account(request, code):
     if request.method == 'POST':
         try:
-            if (profile.objects.filter(authenticationCode=code).exists()):
+            if (profile.objects.filter(authentication_code=code).exists()):
 
-                reg = profile.objects.get(authenticationCode=code)
+                reg = profile.objects.get(authentication_code=code)
                 if (reg.isActivat==True):
                     return Response({'Message': 'Account Already Activated'}, status=status.HTTP_404_NOT_FOUND)
                 else:
