@@ -130,7 +130,7 @@ def forget_password(request):
             key = {
                 'name': user.first_name, 'code': reset_email
             }
-            message = get_template('password_reset_email.html').render(key)
+            message = get_template('Reset Password.html').render(key)
             email = EmailMessage('Email Confirmation', message, to=[email])
             email.content_subtype = 'html'
             email.send()
